@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 type ButtonStyleVariant = 'text' | 'filled' | 'outline';
 
-type ButtonProps = {
+export type ButtonProps = {
 	label: string;
 	variant?: ButtonStyleVariant;
 	disabled?: boolean;
@@ -37,10 +37,19 @@ const variant = props.variant || 'filled';
 <style lang="scss" scoped>
 @import '@scss/app';
 
+@function lighten-color($color, $percent) {
+	@return lighten($color, $percent);
+}
+
 button {
 	@include fontType;
+	padding: 0.5rem 1rem;
+	border-radius: 0.4rem;
 	&:hover {
 		cursor: pointer;
+		transition: all 0.2s ease-in-out;
+		color: $text-black;
+		background-color: lighten-color($tertiary, 30%);
 	}
 }
 
@@ -54,16 +63,44 @@ button {
 	border: $border;
 }
 
+@mixin gradientBtnTheme(
+	$background: none,
+	$color: $primary,
+	$borderColorPrimary,
+	$borderColorSecondary
+) {
+	background-color: $background;
+	$color: $color;
+	border-image-source: linear-gradient(
+		to bottom right,
+		$borderColorPrimary,
+		$borderColorSecondary
+	);
+	border-image-slice: 1;
+	transition: all 0.1s ease-in-out;
+}
+
 .textBtn {
 	$border: none;
-	@include btnTheme($primary, $text-dark, $border);
+	@include btnTheme(none, $text-black);
 }
 
 .filledBtn {
-	@include btnTheme($primary, $text-white);
+	$border: 2px solid $text-black;
+	@include btnTheme($mixed-tertiary, $text-white, $border);
 }
 
 .outlineBtn {
-	@include btnTheme(none, $text-dark);
+	background: none;
+	box-sizing: border-box;
+	padding: 1rem;
+	border-image-source: linear-gradient(to bottom right, red, purple);
+	border-image-slice: 1;
+	transition: all 0.1s ease-in-out;
+}
+
+.outlineBtn:hover {
+	cursor: pointer;
+	border-image-source: linear-gradient(to bottom right, purple, red);
 }
 </style>

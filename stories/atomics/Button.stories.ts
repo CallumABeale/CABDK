@@ -1,5 +1,6 @@
 import { fn } from '@storybook/test';
 import Button from '../../components/atoms/Button.vue';
+import type { ButtonProps } from '../../components/atoms/Button.vue';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 export default {
@@ -12,6 +13,10 @@ export default {
 			options: ['small', 'medium', 'large'],
 		},
 		backgroundColor: { control: 'color' },
+		variant: {
+			control: { type: 'select' },
+			options: ['filled', 'text', 'outline'],
+		},
 	},
 	// Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
 	args: { onClick: fn() },
@@ -19,10 +24,28 @@ export default {
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 
-export const Primary = {
+type ButtonArgs = {
+	args: ButtonProps;
+};
+
+export const Filled: ButtonArgs = {
 	args: {
-		primary: true,
+		// primary: true,
 		label: 'Click me!',
+	},
+};
+
+export const Text: ButtonArgs = {
+	args: {
+		label: 'Click me!',
+		// variant: 'text',
+	},
+};
+
+export const Outline: ButtonArgs = {
+	args: {
+		label: 'Click me!',
+		variant: 'outline',
 	},
 };
 
